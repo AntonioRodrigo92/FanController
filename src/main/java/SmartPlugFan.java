@@ -19,8 +19,8 @@ public class SmartPlugFan implements ControlFan {
     @Override
     public void turnOn() {
         try {
-            System.out.println(LocalDateTime.now().format(formatter) + " - turnOn");
-            sendSmartPlugRequest("turn_on");
+            int responseCode = sendSmartPlugRequest("turn_on");
+            System.out.println(LocalDateTime.now().format(formatter) + " - turnOn" + ". Response code: " + responseCode);
         }
         catch (Exception e) {
             System.err.println("sendSmartPlugRequest Failed");
@@ -31,8 +31,8 @@ public class SmartPlugFan implements ControlFan {
     @Override
     public void turnOff() {
         try {
-            System.out.println(LocalDateTime.now().format(formatter) + " - turnOff");
-            sendSmartPlugRequest("turn_off");
+            int responseCode = sendSmartPlugRequest("turn_off");
+            System.out.println(LocalDateTime.now().format(formatter) + " - turnOff" + ". Response code: " + responseCode);
         }
         catch (Exception e) {
             System.err.println("sendSmartPlugRequest Failed");
@@ -40,7 +40,7 @@ public class SmartPlugFan implements ControlFan {
         }
     }
 
-    private void sendSmartPlugRequest(String actionSuffix) throws Exception {
+    private int sendSmartPlugRequest(String actionSuffix) throws Exception {
         URL url = new URL(baseURL + actionSuffix);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
@@ -55,6 +55,7 @@ public class SmartPlugFan implements ControlFan {
         }
 
 //        System.out.println("Response Code: " + conn.getResponseCode());
+        return conn.getResponseCode();
     }
 
 }
