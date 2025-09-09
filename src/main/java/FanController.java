@@ -13,7 +13,7 @@ public class FanController {
         try {
             Config config = new Config(args[0]);
             HostMachineSet machines = new HostMachineSet(config.getMachines());
-            SmartPlugFan controlFan = new SmartPlugFan(config.getSmartPlugURL(), config.getToken(), config.getEntityId());
+            ControlFan controlFan = new SmartPlugFan(config.getSmartPlugURL(), config.getToken(), config.getEntityId());
             ConcurrentLinkedDeque<String> queue = new ConcurrentLinkedDeque<>();
             MosquittoInstance mosquitto = new MosquittoInstance(config.getMqttBroker(), config.getMqttUsername(), config.getMqttPassword(), config.getMqttTopic(), "", queue);
             mosquitto.startWaitForMessage();
@@ -40,8 +40,7 @@ public class FanController {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (MqttException e) {
+        } catch (MqttException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
